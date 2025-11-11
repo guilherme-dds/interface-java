@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class NotificacaoEmail extends Notificacao {
+public class NotificacaoEmail extends Notificacao implements Priorizavel, Arquivavel {
     private String destinatario;
     private String assunto;
     private String corpo;
@@ -37,4 +37,46 @@ public class NotificacaoEmail extends Notificacao {
     public void registrarLog(){
         System.out.println("[LOG] E-Mail (Prioridade " + this.nivelPrioridade + ") para " + this.destinatario);
     }
+
+    @Override
+    public int obterNivelPrioridade() {
+        return this.nivelPrioridade;
+    }
+
+    @Override
+    public void definirPrioridade(int nivel) {
+        if (nivel >= 1 && nivel <= 10 ){
+            this.nivelPrioridade = nivel;
+            System.out.println("Prioridade Redefinica: " + this.nivelPrioridade);
+        } else {
+            System.out.println("Nível de prioridade invalido (1-10)");
+        }
+    }
+
+    @Override
+    public boolean estaArquivado() {
+        return this.estaArquivado;
+    }
+
+    @Override
+    public void arquivar() {
+        if(!this.estaArquivado) {
+            this.estaArquivado = true;
+            System.out.println("E-Mail arquivado");
+        } else {
+            System.out.println("E-Mail já está arquivado");
+        }
+    }
+
+    @Override
+    public void desarquivar() {
+        if(estaArquivado) {
+            this.estaArquivado = false;
+            System.out.println("E-Mail desarquivado");
+        } else {
+            System.out.println("E-Mail não está arquivado");
+        }
+    }
+
+    
 }
